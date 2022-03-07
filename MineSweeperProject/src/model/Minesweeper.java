@@ -7,18 +7,18 @@ import model.Difficulty;
 
 public class Minesweeper extends AbstractMineSweeper {
 
-    private static int row =2,col=2,explosionCount;
+    private static int row =10,col=10,explosionCount;
     private static int[][] grid = new int[row][col];
 
 
     @Override
     public int getWidth() {
-        return 0;
+        return col;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return row;
     }
 
     @Override
@@ -32,28 +32,22 @@ public class Minesweeper extends AbstractMineSweeper {
         this.row=row;
         this.explosionCount=explosionCount;
 
-    }
-
-
-    public static void main(String[] args) {
         for(int i = 0; i<row; i++)
             for(int j = 0; j<col; j++)
                 grid[i][j] = 0;
 
-        for(int i = 0; i<row; i++)
-        {
-            for(int j = 0; j<col; j++)
-            {
-                System.out.print(grid[i][j]);
-            }
-            System.out.println();
-        }    }
-
-
+    }
 
     @Override
     public void toggleFlag(int x, int y) {
-
+        if ( grid[x][y]==0)
+        {
+            grid[x][y]=1;
+        }
+        else if ( grid[x][y]==1)
+        {
+            grid[x][y]=0;
+        }
     }
 
     @Override
@@ -95,5 +89,18 @@ public class Minesweeper extends AbstractMineSweeper {
     public AbstractTile generateExplosiveTile() {
         return null;
     }
+//
+//    public static void main(String[] args) {
+//
+//        toggleFlag(2,2);
+//
+//        for(int i = 0; i<row; i++)
+//        {
+//            for(int j = 0; j<col; j++)
+//            {
+//                System.out.print(grid[i][j]);
+//            }
+//            System.out.println();
+//        }    }
 
 }
