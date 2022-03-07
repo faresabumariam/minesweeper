@@ -7,7 +7,7 @@ import model.Difficulty;
 
 public class Minesweeper extends AbstractMineSweeper {
 
-    private static int row =2,col=2,explosionCount;
+    private static int row =8,col=8,explosionCount;
     private static int[][] grid = new int[row][col];
 
 
@@ -32,23 +32,11 @@ public class Minesweeper extends AbstractMineSweeper {
         this.row=row;
         this.explosionCount=explosionCount;
 
-    }
-
-
-    public static void main(String[] args) {
         for(int i = 0; i<row; i++)
             for(int j = 0; j<col; j++)
                 grid[i][j] = 0;
 
-        for(int i = 0; i<row; i++)
-        {
-            for(int j = 0; j<col; j++)
-            {
-                System.out.print(grid[i][j]);
-            }
-            System.out.println();
-        }    }
-
+    }
 
 
     @Override
@@ -73,12 +61,12 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void flag(int x, int y) {
-
+        grid[x][y]=1;
     }
 
     @Override
     public void unflag(int x, int y) {
-
+        grid[x][y]=0;
     }
 
     @Override
@@ -95,5 +83,19 @@ public class Minesweeper extends AbstractMineSweeper {
     public AbstractTile generateExplosiveTile() {
         return null;
     }
+
+
+    public static void main(String[] args) {
+
+
+
+        for(int i = 0; i<row; i++)
+        {
+            for(int j = 0; j<col; j++)
+            {
+                System.out.print(grid[i][j]);
+            }
+            System.out.println();
+        }    }
 
 }
