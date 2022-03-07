@@ -21,7 +21,7 @@ public class GameModelTester {
     @Before
     public void init() {
         //uncomment the line below once your game model code is ready for testing
-        //gameModel = new Minesweeper();
+        //gameModel = new model.Minesweeper();
     }
 
     @Test

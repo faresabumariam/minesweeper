@@ -1,15 +1,14 @@
+package model;
+
 import model.AbstractMineSweeper;
 import model.AbstractTile;
 import model.Difficulty;
 
 
 public class Minesweeper extends AbstractMineSweeper {
-    private  int row,col,explosionCount;
-    private int[][] grid = new int[row][col];
 
-    public Minesweeper() {
-        super();
-    }
+    private static int row =2,col=2,explosionCount;
+    private static int[][] grid = new int[row][col];
 
 
     @Override
@@ -29,10 +28,27 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
-        this.col = col;
-        this.row = row;
-        this.explosionCount = explosionCount;
+        this.col=col;
+        this.row=row;
+        this.explosionCount=explosionCount;
+
     }
+
+
+    public static void main(String[] args) {
+        for(int i = 0; i<row; i++)
+            for(int j = 0; j<col; j++)
+                grid[i][j] = 0;
+
+        for(int i = 0; i<row; i++)
+        {
+            for(int j = 0; j<col; j++)
+            {
+                System.out.print(grid[i][j]);
+            }
+            System.out.println();
+        }    }
+
 
 
     @Override
@@ -80,15 +96,4 @@ public class Minesweeper extends AbstractMineSweeper {
         return null;
     }
 
-
-    public static void main(String[] args) {
-
-        startNewGame(5, 5, 10);
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                System.out.print(grid[i][j]);
-            }
-            System.out.println();
-        }
-    }
 }
