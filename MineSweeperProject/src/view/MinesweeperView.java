@@ -36,7 +36,7 @@ public class MinesweeperView implements IGameStateNotifier {
     private JLabel flagCountView = new JLabel();
 
     public MinesweeperView() {
-        this.window = new JFrame("Minesweeper");
+        this.window = new JFrame("model.Minesweeper");
         timerPanel.setLayout(new FlowLayout());
         this.menuBar = new JMenuBar();
         this.gameMenu = new JMenu("New Game");
