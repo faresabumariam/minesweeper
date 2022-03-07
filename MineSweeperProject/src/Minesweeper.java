@@ -2,7 +2,10 @@ import model.AbstractMineSweeper;
 import model.AbstractTile;
 import model.Difficulty;
 
+import java.util.ArrayList;
+
 public class Minesweeper extends AbstractMineSweeper {
+
     @Override
     public int getWidth() {
         return 0;
