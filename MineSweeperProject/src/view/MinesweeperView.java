@@ -212,4 +212,6 @@ public class MinesweeperView implements IGameStateNotifier {
         this.tiles[y][x].notifyExplode();
     }
 
+
 }
+
