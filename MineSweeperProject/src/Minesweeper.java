@@ -2,9 +2,9 @@ import model.AbstractMineSweeper;
 import model.AbstractTile;
 import model.Difficulty;
 
-import java.util.ArrayList;
 
 public class Minesweeper extends AbstractMineSweeper {
+    private int row,col,explosionCount;
 
     @Override
     public int getWidth() {
@@ -23,8 +23,13 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
+        this.col=col;
+        this.row=row;
+        this.explosionCount=explosionCount;
 
     }
+    private int[][] grid = new int[row][col];
+
 
     @Override
     public void toggleFlag(int x, int y) {
