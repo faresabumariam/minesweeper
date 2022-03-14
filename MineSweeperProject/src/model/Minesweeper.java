@@ -57,7 +57,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public AbstractTile getTile(int x, int y) {
-        return grid[x][y];
+        if (x>=0 && y>=0){
+            return grid[x][y];
+        }
+        return null;
     }
 
     @Override
@@ -67,7 +70,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void open(int x, int y) {
-        grid[x][y].open();
+        if(x >= 0 && y >= 0){
+            grid[x][y].open();
+
+        }
     }
 
     @Override
