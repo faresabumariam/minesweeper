@@ -4,6 +4,8 @@ import model.AbstractMineSweeper;
 import model.AbstractTile;
 import model.Difficulty;
 
+import java.util.Random;
+
 
 public class Minesweeper extends AbstractMineSweeper {
 
@@ -23,8 +25,6 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void startNewGame(Difficulty level) {
-
-
 
     }
 
@@ -48,7 +48,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public AbstractTile getTile(int x, int y) {
-        return null;
+        return grid[x][y];
     }
 
     @Override
@@ -58,43 +58,54 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void open(int x, int y) {
-
+        grid[x][y].open();
     }
 
     @Override
     public void flag(int x, int y) {
-        grid[x][y]=1;
+        grid[x][y].flag();
+        this.viewNotifier.notifyFlagged(x,y);
     }
 
     @Override
     public void unflag(int x, int y) {
-        grid[x][y]=0;
+        grid[x][y].unflag();
     }
 
     @Override
     public void deactivateFirstTileRule() {
 
+
     }
 
     @Override
     public AbstractTile generateEmptyTile() {
-        return null;
+        NonExplosiveTile newTile = new NonExplosiveTile();
+        return newTile;
     }
 
     @Override
     public AbstractTile generateExplosiveTile() {
-        return null;
+        ExplosiveTile newTile = new ExplosiveTile();
+        return newTile;
     }
 
+    public AbstractTile generateRandomTile()
+    {
+        Random rand = new Random();
+        int upperBound = 2 ;
+        int int_random = rand.nextInt(upperBound);
 
-    public static void main(String[] args) {
-        for(int i = 0; i<row; i++)
+        if ( int_random == 0)
         {
-            for(int j = 0; j<col; j++)
-            {
-                System.out.print(grid[i][j]);
-            }
-            System.out.println();
-        }    }
+            return generateEmptyTile();
+        }
+        else
+        {
+            return generateExplosiveTile();
+        }
+
+    }
+
 
 }
