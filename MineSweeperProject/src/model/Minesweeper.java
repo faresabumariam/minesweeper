@@ -8,21 +8,23 @@ import model.Difficulty;
 public class Minesweeper extends AbstractMineSweeper {
 
     private static int row =8,col=8,explosionCount;
-    private static int[][] grid = new int[row][col];
+    private static AbstractTile[][] grid = new AbstractTile[row][col];
 
 
     @Override
     public int getWidth() {
-        return 0;
+        return col;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return row;
     }
 
     @Override
     public void startNewGame(Difficulty level) {
+        pri
+
 
     }
 
@@ -86,9 +88,6 @@ public class Minesweeper extends AbstractMineSweeper {
 
 
     public static void main(String[] args) {
-
-
-
         for(int i = 0; i<row; i++)
         {
             for(int j = 0; j<col; j++)

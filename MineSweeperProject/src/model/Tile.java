@@ -3,22 +3,18 @@ package model;
 import notifier.ITileStateNotifier;
 import test.TestableTile;
 
-public class Tile implements TestableTile {
+public class Tile extends AbstractTile {
     private boolean visible;
-
-
-    public Tile()
-    {
-        visible=false;
-    }
 
     @Override
     public boolean open() {
-        return visible;
+        return false;
     }
 
     @Override
     public void flag() {
+
+
 
     }
 
@@ -38,7 +34,8 @@ public class Tile implements TestableTile {
     }
 
     @Override
-    public void setTileNotifier(ITileStateNotifier notifier) {
-
+    public boolean isOpened() {
+        return false;
     }
+
 }
