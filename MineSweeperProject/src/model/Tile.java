@@ -21,7 +21,7 @@ public class Tile extends AbstractTile{
 
     @Override
     public void flag() {
-        flag = true;
+            flag = true;
     }
 
     @Override
