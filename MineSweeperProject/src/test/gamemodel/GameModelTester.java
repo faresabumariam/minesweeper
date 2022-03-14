@@ -75,7 +75,7 @@ public class GameModelTester {
             for (int i=0; i<h; ++i)
                 for (int j=0; j<w; ++j) 
                     try {
-                        TestableTile temp = gameModel.getTile(j, i);
+                        TestableTile temp = gameModel.getTile(i, j);
                         if (temp == null) throw new Exception();
                     }catch (Exception e) {
                         e.printStackTrace();
@@ -86,18 +86,18 @@ public class GameModelTester {
 
         for (int i=0; i<h; ++i)
             for (int j=0; j<w; ++j) {
-                TestableTile temp = gameModel.getTile(j, i);
+                TestableTile temp = gameModel.getTile(i, j);
                 explosionCount += (temp.isExplosive())? 1 : 0;
             }  
         assertEquals(explosionCount, totalExplosion);
 
         for (int i=0; i<h; ++i)
             for (int j=0; j<w; ++j)
-                assertNotNull(gameModel.getTile(j, i));
+                assertNotNull(gameModel.getTile(i, j));
 
         for (int i=0; i<h; ++i)
             for (int j=0; j<w; ++j)
-                assertTrue(gameModel.getTile(j, i) instanceof TestableTile);
+                assertTrue(gameModel.getTile(i, j) instanceof TestableTile);
 
     }
 
