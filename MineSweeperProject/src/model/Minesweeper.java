@@ -4,6 +4,8 @@ import model.AbstractMineSweeper;
 import model.AbstractTile;
 import model.Difficulty;
 
+import java.util.Random;
+
 
 public class Minesweeper extends AbstractMineSweeper {
 
@@ -46,7 +48,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public AbstractTile getTile(int x, int y) {
-        return null;
+        return grid[x][y];
     }
 
     @Override
@@ -56,22 +58,23 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void open(int x, int y) {
-
+        grid[x][y].open();
     }
 
     @Override
     public void flag(int x, int y) {
-        grid[x][y]=
-
+        grid[x][y].flag();
+        this.viewNotifier.notifyFlagged(x,y);
     }
 
     @Override
     public void unflag(int x, int y) {
-        grid[x][y]=0;
+        grid[x][y].unflag();
     }
 
     @Override
     public void deactivateFirstTileRule() {
+
 
     }
 
@@ -85,6 +88,23 @@ public class Minesweeper extends AbstractMineSweeper {
     public AbstractTile generateExplosiveTile() {
         ExplosiveTile newTile = new ExplosiveTile();
         return newTile;
+    }
+
+    public AbstractTile generateRandomTile()
+    {
+        Random rand = new Random();
+        int upperBound = 2 ;
+        int int_random = rand.nextInt(upperBound);
+
+        if ( int_random == 0)
+        {
+            return generateEmptyTile();
+        }
+        else
+        {
+            return generateExplosiveTile();
+        }
+
     }
 
 
