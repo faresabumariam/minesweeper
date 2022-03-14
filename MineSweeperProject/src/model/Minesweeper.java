@@ -23,7 +23,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void startNewGame(Difficulty level) {
-        pri
+
 
 
     }
@@ -36,7 +36,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
         for(int i = 0; i<row; i++)
             for(int j = 0; j<col; j++)
-                grid[i][j] = 0;
+                grid[i][j] = generateEmptyTile();
 
     }
 
