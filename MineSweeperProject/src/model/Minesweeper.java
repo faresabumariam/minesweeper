@@ -24,8 +24,6 @@ public class Minesweeper extends AbstractMineSweeper {
     @Override
     public void startNewGame(Difficulty level) {
 
-
-
     }
 
     @Override
@@ -63,7 +61,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void flag(int x, int y) {
-        grid[x][y]=1;
+        grid[x][y]=
+
     }
 
     @Override
@@ -78,23 +77,15 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public AbstractTile generateEmptyTile() {
-        return null;
+        NonExplosiveTile newTile = new NonExplosiveTile();
+        return newTile;
     }
 
     @Override
     public AbstractTile generateExplosiveTile() {
-        return null;
+        ExplosiveTile newTile = new ExplosiveTile();
+        return newTile;
     }
 
-
-    public static void main(String[] args) {
-        for(int i = 0; i<row; i++)
-        {
-            for(int j = 0; j<col; j++)
-            {
-                System.out.print(grid[i][j]);
-            }
-            System.out.println();
-        }    }
 
 }
