@@ -9,10 +9,8 @@ import java.util.Random;
 
 public class Minesweeper extends AbstractMineSweeper {
 
-    private static int row ,col,explosionCount;
+    private static int row, col, explosionCount,flagCount;
     private static AbstractTile[][] grid;
-    private int explosivesPresent;
-
 
     @Override
     public int getWidth() {
@@ -28,69 +26,62 @@ public class Minesweeper extends AbstractMineSweeper {
     public void startNewGame(Difficulty level) {
         switch (level) {
             case EASY:
-                startNewGame(8,8,10);
+                startNewGame(8, 8, 10);
                 break;
 
             case MEDIUM:
-                startNewGame(16,16,40);
+                startNewGame(16, 16, 40);
                 break;
             case HARD:
-                startNewGame(16,30,99);
+                startNewGame(16, 30, 99);
                 break;
         }
-
-
-
-
     }
 
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
-        this.col=col;
-        this.row=row;
+        this.col = col;
+        this.row = row;
         grid = new AbstractTile[row][col];
-        this.explosionCount=explosionCount;
+        this.explosionCount = explosionCount;
 
-        int explosivesPresent =0;
 
-        for(int i = 0; i<row; i++)
-        {
-            for(int j = 0; j<col; j++)
-            {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 grid[i][j] = generateEmptyTile();
             }
         }
         Random rand = new Random();
 
-        while(explosionCount>0)
-        {
-            int upperBoundX = row-1;
-            int upperBoundY = col-1;
+        while (explosionCount > 0) {
+            int upperBoundX = row - 1;
+            int upperBoundY = col - 1;
             int intRandomX = rand.nextInt(upperBoundX);
             int intRandomY = rand.nextInt(upperBoundY);
 
-            if(!grid[intRandomX][intRandomY].isExplosive())
-            {
-                grid[intRandomX][intRandomY]=generateExplosiveTile();
+            if (!grid[intRandomX][intRandomY].isExplosive()) {
+                grid[intRandomX][intRandomY] = generateExplosiveTile();
                 explosionCount--;
             }
-
         }
 
-
-
-
+        this.viewNotifier.notifyNewGame(row, col);
     }
 
 
     @Override
     public void toggleFlag(int x, int y) {
+        if (grid[x][y].isFlagged()) {
+            grid[x][y].unflag();
+        } else {
+            grid[x][y].flag();
+        }
 
     }
 
     @Override
     public AbstractTile getTile(int x, int y) {
-        if (x>=0 && y>=0 && x<row && y<col){
+        if (x >= 0 && y >= 0 && x < row && y < col) {
             return grid[x][y];
         }
         return null;
@@ -99,25 +90,51 @@ public class Minesweeper extends AbstractMineSweeper {
     @Override
     public void setWorld(AbstractTile[][] world) {
 
+        if (world.length == grid.length && world[0].length == grid[0].length
+        ) {
+            for (int i = 0; i < world.length; i++) {
+                for (int j = 0; j < world[i].length; j++) {
+                    grid[i][j] = world[i][j];
+                }
+            }
+
+
+        }
+
+
     }
 
     @Override
     public void open(int x, int y) {
-        if(x >= 0 && y >= 0){
+        if (x >= 0 && y >= 0 && x < row && y < col) {
             grid[x][y].open();
-
         }
+
+        if(grid[x][y].isExplosive())
+        {
+            this.viewNotifier.notifyExploded(x, y);
+        }
+
+        else
+        {
+            this.viewNotifier.notifyOpened(x,y,getNearbyExplosives(x,y));
+        }
+
     }
 
     @Override
     public void flag(int x, int y) {
-        grid[x][y].flag();
-        this.viewNotifier.notifyFlagged(x,y);
+
+        if (!grid[x][y].isOpened()) {
+            grid[x][y].flag();
+            this.viewNotifier.notifyFlagged(x, y);
+        }
     }
 
     @Override
     public void unflag(int x, int y) {
         grid[x][y].unflag();
+        this.viewNotifier.notifyUnflagged(x,y);
     }
 
     @Override
@@ -138,18 +155,50 @@ public class Minesweeper extends AbstractMineSweeper {
         return newTile;
     }
 
-//    public AbstractTile generateRandomTile()
-//    {
-//        Random rand = new Random();
-//        int upperBound = 2 ;
-//        int int_random = rand.nextInt(upperBound);
-//
-//        if ( int_random == 0) {
-//            return generateEmptyTile();
-//        }
-//        else {
-//            explosivesPresent++;
-//            return generateExplosiveTile();
-//        }
-//    }
+    public int getNearbyExplosives(int x, int y)
+    {
+        int count = 0;
+
+        if(getTile(x-1,y-1).isExplosive())
+        {
+            count++;
+        }
+
+        if(getTile(x,y-1).isExplosive())
+        {
+            count++;
+        }
+
+        if(getTile(x+1,y-1).isExplosive())
+        {
+            count++;
+        }
+
+        if(getTile(x-1,y).isExplosive())
+        {
+            count++;
+        }
+
+        if(getTile(x+1,y).isExplosive())
+        {
+            count++;
+        }
+
+        if(getTile(x-1,y+1).isExplosive())
+        {
+            count++;
+        }
+
+        if(getTile(x,y+1).isExplosive())
+        {
+            count++;
+        }
+
+        if(getTile(x+1,y+1).isExplosive())
+        {
+            count++;
+        }
+
+        return count;
+    }
 }

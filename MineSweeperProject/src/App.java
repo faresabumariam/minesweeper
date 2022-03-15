@@ -12,10 +12,8 @@ public class App {
         
         view.setGameModel(model);
         model.setGameStateNotifier(view);
-        /**
-            Your code to bind your game model to the game user interface
-        */
-        
+
+
         
         //model.startNewGame(Difficulty.EASY);
     }
