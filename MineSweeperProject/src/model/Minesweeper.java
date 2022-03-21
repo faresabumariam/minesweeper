@@ -3,6 +3,7 @@ package model;
 import model.AbstractMineSweeper;
 import model.AbstractTile;
 import model.Difficulty;
+import java.util.Random;
 
 import java.util.Random;
 
@@ -11,6 +12,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private static int row, col, explosionCount, flagCount;
     private static AbstractTile[][] grid;
+    private boolean firstTileRule=true;
+    private Random rd;
 
     @Override
     public int getWidth() {
@@ -103,19 +106,119 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void open(int x, int y) {
+        if(x< grid[0].length && y< grid.length && x>=0 && y>=0)
+        {
 
-        if (x >= 0 && y >= 0 && x < grid.length && y < grid[0].length) {
-            if (grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+            grid[y][x].isOpened();
+
+            boolean check = false;
+            if (firstTileRule)
+            {
+                firstTileRule = false;
                 grid[y][x].open();
-                this.viewNotifier.notifyExploded(x, y);
+
+                if (grid[y][x].isExplosive()) {
+                    grid[y][x] = generateEmptyTile();
+                    rd = new Random();
+                    while (!check) {
+                        int randomIndexRows = rd.nextInt(grid.length);
+                        int randomIndexColumns = rd.nextInt(grid[0].length);
+                        if (randomIndexRows != y && randomIndexColumns != x && !grid[randomIndexRows][randomIndexColumns].isExplosive()) {
+                            check = true;
+                            grid[randomIndexRows][randomIndexColumns] = new ExplosiveTile();
+                            grid[randomIndexRows][randomIndexColumns]=generateExplosiveTile();
+                        }
+
+                    }
+                }
 
             }
-            if (!grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+            else
+            {
                 grid[y][x].open();
-                this.viewNotifier.notifyOpened(x, y, getNearbyExplosives(x,y));
             }
+
+
+            int counter=0;
+            for (int i = x-1; i <= x+1; i++)
+            {
+                for (int j = y-1; j <= y+1; j++)
+                {
+                    if(i>=0 && i< grid.length && j>=0 && j<grid[0].length)
+                    {
+                        if( grid[i][j].isExplosive())
+                        {
+                            counter +=1;
+                        }
+                        else{}
+
+                    }
+                    else{}
+                }
+            }
+            viewNotifier.notifyOpened(x,y,counter);
+
+            if(grid[x][y].isExplosive())
+            {
+                viewNotifier.notifyExploded(x,y);
+                viewNotifier.notifyGameLost();
+            }
+
         }
+
+        else{}
     }
+
+//        boolean firstOne = true;
+//
+//        if(firstTileRule)
+//        {
+//            if(firstOne)
+//            {
+//                if(grid[y][x].isExplosive() && x >= 0 && y >= 0 && x < grid.length && y < grid[0].length)
+//                {
+//                    grid[y][x]=generateEmptyTile();
+//                    grid[y][x].open();
+//                    this.viewNotifier.notifyOpened(x, y, getNearbyExplosives(x,y));
+//
+//                }
+//                firstOne=false;
+//            }
+//
+//            else
+//            {
+//                if (x >= 0 && y >= 0 && x < grid.length && y < grid[0].length) {
+//                    if (grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+//
+//                        this.viewNotifier.notifyExploded(x, y);
+//
+//                    }
+//                    if (!grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+//                        grid[y][x].open();
+//                        this.viewNotifier.notifyOpened(x, y, getNearbyExplosives(x,y));
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        else
+//        {
+//            if (x >= 0 && y >= 0 && x < grid.length && y < grid[0].length) {
+//                if (grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+//                    grid[y][x].open();
+//                    this.viewNotifier.notifyExploded(x, y);
+//
+//                }
+//                if (!grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+//                    grid[y][x].open();
+//                    this.viewNotifier.notifyOpened(x, y, getNearbyExplosives(x,y));
+//                }
+//            }
+//        }
+//
+//
+//    }
 
 
     @Override
@@ -139,8 +242,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void deactivateFirstTileRule() {
-
-
+            firstTileRule=true;
     }
 
     @Override
