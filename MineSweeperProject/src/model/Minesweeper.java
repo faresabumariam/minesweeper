@@ -164,50 +164,30 @@ public class Minesweeper extends AbstractMineSweeper {
         return newTile;
     }
 
-//    public int getNearbyExplosives(int x, int y)
-//    {
-//        int count = 0;
-//
-//        if(getTile(x-1,y-1).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        if(getTile(x,y-1).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        if(getTile(x+1,y-1).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        if(getTile(x-1,y).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        if(getTile(x+1,y).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        if(getTile(x-1,y+1).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        if(getTile(x,y+1).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        if(getTile(x+1,y+1).isExplosive())
-//        {
-//            count++;
-//        }
-//
-//        return count;
-//    }
+
+
+    public int getNearbyExplosives(int thisPosX, int thisPosY){
+
+        int countExp =0;
+        int MIN_X = 0, MIN_Y =0;
+        int MAX_X = col - 1, MAX_Y = row - 1;
+
+        int startPosX = (thisPosX - 1 < MIN_X) ? thisPosX : thisPosX-1;
+        int startPosY = (thisPosY - 1 < MIN_Y) ? thisPosY : thisPosY-1;
+        int endPosX =   (thisPosX + 1 > MAX_X) ? thisPosX : thisPosX+1;
+        int endPosY =   (thisPosY + 1 > MAX_Y) ? thisPosY : thisPosY+1;
+
+
+// See how many are alive
+        for (int rowNum=startPosX; rowNum<=endPosX; rowNum++) {
+            for (int colNum=startPosY; colNum<=endPosY; colNum++) {
+                if(getTile(endPosX,endPosY).isExplosive()){
+                    countExp++;
+                }
+            }
+        }
+
+        return countExp;
+    }
+
 }
