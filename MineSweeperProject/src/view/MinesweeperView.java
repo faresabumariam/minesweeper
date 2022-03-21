@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -34,6 +35,16 @@ public class MinesweeperView implements IGameStateNotifier {
     private JPanel flagPanel = new JPanel();
     private JLabel timerView = new JLabel();
     private JLabel flagCountView = new JLabel();
+    int time = 0 ;
+    Timer t = new Timer(1000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            timerView.setText(String.valueOf(time));
+            time++;
+        }
+    });
+
+
 
     public MinesweeperView() {
         this.window = new JFrame("model.Minesweeper");
@@ -136,6 +147,8 @@ public class MinesweeperView implements IGameStateNotifier {
         this.flagCountView.setText("0");
         this.window.setSize(col * TILE_SIZE, row * TILE_SIZE + 30);
         this.world.removeAll();
+        time=0;
+        t.start();
 
         
         this.tiles = new TileView[row][col];
@@ -167,8 +180,10 @@ public class MinesweeperView implements IGameStateNotifier {
     @Override
     public void notifyGameLost() {
         this.removeAllTileEvents();
+        t.stop();
         //throw new UnsupportedOperationException();
         JOptionPane.showMessageDialog(null, "Game lost, try again!");
+        t.stop();
             }
     @Override
     public void notifyGameWon() {
