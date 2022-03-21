@@ -170,8 +170,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
 
 // See how many are alive
-        for (int rowNum=startPosX; rowNum<=endPosX; rowNum++) {
-            for (int colNum=startPosY; colNum<=endPosY; colNum++) {
+        for (int rowNum=startPosY; rowNum<=endPosY; rowNum++) {
+            for (int colNum=startPosX; colNum<=endPosX; colNum++) {
                 if(getTile(endPosX,endPosY).isExplosive()){
                     countExp++;
                 }
