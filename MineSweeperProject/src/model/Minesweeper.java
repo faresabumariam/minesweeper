@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Minesweeper extends AbstractMineSweeper {
 
-    private static int row, col, explosionCount,flagCount;
+    private static int row, col, explosionCount, flagCount;
     private static AbstractTile[][] grid;
 
     @Override
@@ -54,8 +54,8 @@ public class Minesweeper extends AbstractMineSweeper {
         Random rand = new Random();
 
         while (explosionCount > 0) {
-            int upperBoundX = row - 1;
-            int upperBoundY = col - 1;
+            int upperBoundX = row;
+            int upperBoundY = col;
             int intRandomX = rand.nextInt(upperBoundX);
             int intRandomY = rand.nextInt(upperBoundY);
 
@@ -81,46 +81,55 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public AbstractTile getTile(int x, int y) {
-        if (x >= 0 && y >= 0 && x < row && y < col) {
-            return grid[x][y];
+
+        try {
+            return grid[y][x];
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+
         }
-        return null;
     }
+
+//
+//        if (x >= 0 && y >= 0 && x < row && y < col) {
+//            return grid[x][y];
+//        }
+//        return null;
+
 
     @Override
     public void setWorld(AbstractTile[][] world) {
 
-        if (world.length == grid.length && world[0].length == grid[0].length
-        ) {
-            for (int i = 0; i < world.length; i++) {
-                for (int j = 0; j < world[i].length; j++) {
-                    grid[i][j] = world[i][j];
-                }
-            }
-
-
-        }
-
+        grid = world;
 
     }
+
 
     @Override
     public void open(int x, int y) {
-        if (x >= 0 && y >= 0 && x < row && y < col) {
-            grid[x][y].open();
-        }
 
-        if(grid[x][y].isExplosive())
-        {
-            this.viewNotifier.notifyExploded(x, y);
-        }
+        if (x >= 0 && y >= 0 && x < grid.length && y < grid[0].length) {
+            if (grid[x][y].isExplosive() && !grid[x][y].isFlagged()) {
+                grid[x][y].open();
 
-        else
-        {
-            this.viewNotifier.notifyOpened(x,y,getNearbyExplosives(x,y));
+            }
+            if (!grid[x][y].isExplosive() && !grid[x][y].isFlagged()) {
+                grid[x][y].open();
+            }
         }
-
     }
+
+//        if (x >= 0 && y >= 0 && x < row && y < col) {
+//            grid[x][y].open();
+//        }
+//
+//        if (grid[x][y].isExplosive()) {
+//            this.viewNotifier.notifyExploded(x, y);
+//        } else {
+//            this.viewNotifier.notifyOpened(x, y, 2);
+//        }
+
+
 
     @Override
     public void flag(int x, int y) {
@@ -134,7 +143,7 @@ public class Minesweeper extends AbstractMineSweeper {
     @Override
     public void unflag(int x, int y) {
         grid[x][y].unflag();
-        this.viewNotifier.notifyUnflagged(x,y);
+        this.viewNotifier.notifyUnflagged(x, y);
     }
 
     @Override
@@ -155,50 +164,50 @@ public class Minesweeper extends AbstractMineSweeper {
         return newTile;
     }
 
-    public int getNearbyExplosives(int x, int y)
-    {
-        int count = 0;
-
-        if(getTile(x-1,y-1).isExplosive())
-        {
-            count++;
-        }
-
-        if(getTile(x,y-1).isExplosive())
-        {
-            count++;
-        }
-
-        if(getTile(x+1,y-1).isExplosive())
-        {
-            count++;
-        }
-
-        if(getTile(x-1,y).isExplosive())
-        {
-            count++;
-        }
-
-        if(getTile(x+1,y).isExplosive())
-        {
-            count++;
-        }
-
-        if(getTile(x-1,y+1).isExplosive())
-        {
-            count++;
-        }
-
-        if(getTile(x,y+1).isExplosive())
-        {
-            count++;
-        }
-
-        if(getTile(x+1,y+1).isExplosive())
-        {
-            count++;
-        }
-
-        return count;
-    }
+//    public int getNearbyExplosives(int x, int y)
+//    {
+//        int count = 0;
+//
+//        if(getTile(x-1,y-1).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        if(getTile(x,y-1).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        if(getTile(x+1,y-1).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        if(getTile(x-1,y).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        if(getTile(x+1,y).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        if(getTile(x-1,y+1).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        if(getTile(x,y+1).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        if(getTile(x+1,y+1).isExplosive())
+//        {
+//            count++;
+//        }
+//
+//        return count;
+//    }
 }
