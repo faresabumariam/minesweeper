@@ -42,6 +42,7 @@ public class Minesweeper extends AbstractMineSweeper {
     public void startNewGame(int row, int col, int explosionCount) {
         this.col = col;
         this.row = row;
+        this.flagCount = 0;
         grid = new AbstractTile[row][col];
         this.explosionCount = explosionCount;
 
@@ -54,13 +55,13 @@ public class Minesweeper extends AbstractMineSweeper {
         Random rand = new Random();
 
         while (explosionCount > 0) {
-            int upperBoundX = row;
-            int upperBoundY = col;
-            int intRandomX = rand.nextInt(upperBoundX);
+            int upperBoundY = row;
+            int upperBoundX = col;
             int intRandomY = rand.nextInt(upperBoundY);
+            int intRandomX = rand.nextInt(upperBoundX);
 
-            if (!grid[intRandomX][intRandomY].isExplosive()) {
-                grid[intRandomX][intRandomY] = generateExplosiveTile();
+            if (!grid[intRandomY][intRandomX].isExplosive()) {
+                grid[intRandomY][intRandomX] = generateExplosiveTile();
                 explosionCount--;
             }
         }
@@ -73,7 +74,8 @@ public class Minesweeper extends AbstractMineSweeper {
     public void toggleFlag(int x, int y) {
         if (grid[x][y].isFlagged()) {
             grid[x][y].unflag();
-        } else {
+        }
+        else {
             grid[x][y].flag();
         }
 
@@ -90,12 +92,6 @@ public class Minesweeper extends AbstractMineSweeper {
         }
     }
 
-//
-//        if (x >= 0 && y >= 0 && x < row && y < col) {
-//            return grid[x][y];
-//        }
-//        return null;
-
 
     @Override
     public void setWorld(AbstractTile[][] world) {
@@ -109,41 +105,36 @@ public class Minesweeper extends AbstractMineSweeper {
     public void open(int x, int y) {
 
         if (x >= 0 && y >= 0 && x < grid.length && y < grid[0].length) {
-            if (grid[x][y].isExplosive() && !grid[x][y].isFlagged()) {
-                grid[x][y].open();
+            if (grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+                grid[y][x].open();
+                this.viewNotifier.notifyExploded(x, y);
 
             }
-            if (!grid[x][y].isExplosive() && !grid[x][y].isFlagged()) {
-                grid[x][y].open();
+            if (!grid[y][x].isExplosive() && !grid[y][x].isFlagged()) {
+                grid[y][x].open();
+                this.viewNotifier.notifyOpened(x, y, getNearbyExplosives(x,y));
             }
         }
     }
-
-//        if (x >= 0 && y >= 0 && x < row && y < col) {
-//            grid[x][y].open();
-//        }
-//
-//        if (grid[x][y].isExplosive()) {
-//            this.viewNotifier.notifyExploded(x, y);
-//        } else {
-//            this.viewNotifier.notifyOpened(x, y, 2);
-//        }
-
 
 
     @Override
     public void flag(int x, int y) {
 
-        if (!grid[x][y].isOpened()) {
-            grid[x][y].flag();
+        if (!grid[y][x].isOpened()) {
+            grid[y][x].flag();
             this.viewNotifier.notifyFlagged(x, y);
+            flagCount++;
+            this.viewNotifier.notifyFlagCountChanged(flagCount);
         }
     }
 
     @Override
     public void unflag(int x, int y) {
-        grid[x][y].unflag();
+        grid[y][x].unflag();
+        flagCount--;
         this.viewNotifier.notifyUnflagged(x, y);
+        this.viewNotifier.notifyFlagCountChanged(flagCount);
     }
 
     @Override
