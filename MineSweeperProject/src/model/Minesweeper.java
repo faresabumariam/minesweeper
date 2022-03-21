@@ -3,6 +3,7 @@ package model;
 import model.AbstractMineSweeper;
 import model.AbstractTile;
 import model.Difficulty;
+import org.junit.rules.Stopwatch;
 
 import java.util.Random;
 

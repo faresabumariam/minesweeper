@@ -136,6 +136,7 @@ public class MinesweeperView implements IGameStateNotifier {
         this.flagCountView.setText("0");
         this.window.setSize(col * TILE_SIZE, row * TILE_SIZE + 30);
         this.world.removeAll();
+
         
         this.tiles = new TileView[row][col];
         for (int i=0; i<row; ++i) {
@@ -167,11 +168,14 @@ public class MinesweeperView implements IGameStateNotifier {
     public void notifyGameLost() {
         this.removeAllTileEvents();
         //throw new UnsupportedOperationException();
-    }
+        JOptionPane.showMessageDialog(null, "Game lost, try again!");
+            }
     @Override
     public void notifyGameWon() {
         this.removeAllTileEvents();
+        JOptionPane.showMessageDialog(null, "Congrats you won the game, well done!");
         throw new UnsupportedOperationException();
+
     }
 
     private void removeAllTileEvents() {
